@@ -1,0 +1,29 @@
+{
+  "name": "kauri",
+  "version": "1.0.0",
+  "description": "cd docs python -m SimpleHTTPServer 3000",
+  "main": "truffle-config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radek1st/kauri.git"
+  },
+  "author": "Radek Ostrowski - radek@startonchain.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/radek1st/kauri/issues"
+  },
+  "homepage": "https://github.com/radek1st/kauri#readme",
+  "dependencies": {
+    "ganache-cli": "^6.8.2"
+  },
+  "devDependencies": {
+    "truffle-assertions": "^0.9.2"
+  }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kauri Staking DApp</title>
+
+    <script src="js/lib/jquery-3.2.1.min.js"></script>
+    <script src="js/lib/moment-2.19.2.min.js"></script>
+    <script src="js/lib/moment-timezone-0.5.14.min.js "></script>
+    <script src="js/lib/web3.min.js"></script>
+    <script src="js/dapp.js"></script>
+</head>
+<body>
+
+<h1>User wallet details:</h1>
+<h3>User wallet address:</h3><div id="userWalletAddress"></div>
+<h3>User ether balance:</h3><div id="userEtherBalance"></div>
+<h3>User token balance:</h3><div id="userTokenBalance"></div>
+
+<h1>User staking details:</h1>
+<h3>Stake:</h3>
+Amount: <input type="text" id="stake-amount">
+Duration: <input type="text" id="stake-duration">
+<input type="button" id="enableStaking" value="Enable Staking">
+<input type="button" id="stake" value="Stake">
+<h5>Currently enabled tokens:</h5><div id="userAllowedTokens"></div>
+
+<h3>User staked token details:</h3>
+<h5>Staked time:</h5><div id="userStakedTime"></div>
+<h5>Staked duration:</h5><div id="userStakedDuration"></div>
+<h5>User staked tokens:</h5><div id="userStakedTokenBalance"></div>
+<h5>Is locked:</h5><div id="userStakedLocked"></div>
+
+<h3>Unstake and withdraw unlocked tokens:</h3>
+Amount: <input type="text" id="unstake-amount">
+<input type="button" id="withdraw" value="Withdraw Tokens">
+
+<h1>Admin dashboard:</h1>
+
+<h3>Admin wallet address:</h3><div id="adminWalletAddress"></div>
+<h3>All staked tokens balance:</h3><div id="allStakedTokenBalance"></div>
+<h3>Check staked details for any user:</h3>
+User wallet address: <input type="text" id="user-wallet-address">
+<input type="button" id="check-staking-details" value="Check Staking Details">
+
+<h3>Stake For User:</h3>
+Amount: <input type="text" id="stake-for-amount">
+Duration: <input type="text" id="stake-for-duration">
+For User: <input type="text" id="stake-for-user">
+<input type="button" id="enableStaking-for" value="Enable Staking">
+<input type="button" id="stake-for" value="Stake For User">
+
+<h2>Show staking data:</h2>
+From: <input type="text" id="from">
+To: <input type="text" id="to">
+<input type="button" id="check-staking-events" value="Check Staking Events">
+
+<h3>All addresses that staked:</h3>
+<div id="staking-addresses"></div>
+
+<h3>All addresses that withdrew:</h3>
+<div id="unstaking-addresses"></div>
+
+<h3>All events per address:</h3>
+<div id="all-events"></div>
+
+</body>
+</html>

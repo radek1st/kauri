@@ -1,0 +1,16 @@
+{
+  "name": "kauri",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ radek1st/kauri",
+    "create-local": "graph create --node http://localhost:8020/ radek1st/kauri",
+    "remove-local": "graph remove --node http://localhost:8020/ radek1st/kauri",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 radek1st/kauri"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.11.2",
+    "@graphprotocol/graph-ts": "0.11.0"
+  }
+}
