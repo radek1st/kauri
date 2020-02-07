@@ -4,14 +4,13 @@ DApp = {
     tokenContract: null,
     currentAccount: null,
 
+    networkId: 0,
+    //local, mainnet, empty, ropsten
+    tokenAddressList: ["0x8A5769bE1A538aF4259f8687c73bd03a26C1A78a","","","0xbe4c5eea642f0f2245780cd08b7168c77c22c50e"],
+    stakingAddressList: ["0xd06e9C6B3280FB3ee68264C29788B1A523a3ae99", "", "", "0x62b2890788fb0f001ad93c30288937df0873bdc2"],
     //localhost:
-    //tokenAddress: "0x8A5769bE1A538aF4259f8687c73bd03a26C1A78a",
-    //stakingAddress: "0xd06e9C6B3280FB3ee68264C29788B1A523a3ae99",
-
-    //Ropsten:
-    tokenAddress: "0xbe4c5eea642f0f2245780cd08b7168c77c22c50e",
-    stakingAddress: "0x62b2890788fb0f001ad93c30288937df0873bdc2",
-        //previous - "0x8f2db24237a35613915bb93cfb2588dfb44afb5d",
+    tokenAddress: "",
+    stakingAddress: "",
 
     tokenDecimals: 1000000,
 
@@ -44,25 +43,44 @@ DApp = {
     },
 
     initContract: function(){
-        $.getJSON('contracts/KauriStaking.json', function(stakingContract){
-            DApp.stakingContract = new web3.eth.Contract(stakingContract.abi, DApp.stakingAddress);
-            console.log("[x] Staking contract initialized.");
 
-            $.getJSON('contracts/KauriTestToken.json', function(tokenContract){
-                DApp.tokenContract = new web3.eth.Contract(tokenContract.abi, DApp.tokenAddress);
-                console.log("[x] Token contract initialized.");
+        web3.eth.getChainId(function(err,res){
+            if(err){
+                console.log("chainId error", err);
+            } else {
+                DApp.networkId = res;
+                if(res == 1){
+                    $("#currentNetwork").html("Mainnet");
+                } else if(res == 3){
+                    $("#currentNetwork").html("Ropsten");
+                } else {
+                    $("#currentNetwork").html("Other network Id: " + res);
+                }
+                DApp.tokenAddress = DApp.tokenAddressList[res];
+                DApp.stakingAddress = DApp.stakingAddressList[res];
 
-                    web3.eth.getAccounts(function(error, accounts) {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            DApp.currentAccount = accounts[0];
-                            console.log("[x] Using account", DApp.currentAccount);
-                            DApp.initFrontend();
-                        }
+                $.getJSON('contracts/KauriStaking.json', function(stakingContract){
+                    DApp.stakingContract = new web3.eth.Contract(stakingContract.abi, DApp.stakingAddress);
+                    console.log("[x] Staking contract initialized.");
+
+                    $.getJSON('contracts/KauriTestToken.json', function(tokenContract){
+                        DApp.tokenContract = new web3.eth.Contract(tokenContract.abi, DApp.tokenAddress);
+                        console.log("[x] Token contract initialized.");
+
+                        web3.eth.getAccounts(function(error, accounts) {
+                            if (error) {
+                                console.error(error);
+                            } else {
+                                DApp.currentAccount = accounts[0];
+                                console.log("[x] Using account", DApp.currentAccount);
+                                DApp.initFrontend();
+                            }
+                        });
+
                     });
+                });
 
-            });
+            }
         });
     },
 
