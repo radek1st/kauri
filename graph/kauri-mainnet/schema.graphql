@@ -1,0 +1,27 @@
+type OwnershipRenounced @entity {
+  id: ID!
+  previousOwner: Bytes! # address
+}
+
+type OwnershipTransferred @entity {
+  id: ID!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+}
+
+type TokensStaked @entity {
+  id: ID!
+  stakedBy: Bytes! # address
+  stakedFor: Bytes! # address
+  time: BigInt! # uint256
+  duration: BigInt! # uint256
+  amount: BigInt! # uint256
+}
+
+type TokensUnstaked @entity {
+  id: ID!
+  staker: Bytes! # address
+  time: BigInt! # uint256
+  amount: BigInt! # uint256
+  remaining: BigInt! # uint256
+}

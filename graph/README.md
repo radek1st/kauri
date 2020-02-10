@@ -27,7 +27,7 @@ graph init \
   cd kauri-ropsten
   yarn deploy
 
-  cd kauri
+  cd kauri-mainnet
   yarn deploy
 ```
 
