@@ -1957,11 +1957,11 @@ mafmt@^6.0.2:
     multiaddr "^6.1.0"
 
 mafmt@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/mafmt/-/mafmt-7.0.1.tgz#24ad854f990718b8a541f6489604bc57ef15be6b"
-  integrity sha512-a/QLhrQiSOTXrfZYGovPETx7BLwwOI5v+OYrQzUllGZ8Q6M5QgRBtCc3dkZcpZfhv6+aRVjFFkhCcmQu4dEwkQ==
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/mafmt/-/mafmt-7.1.0.tgz#4126f6d0eded070ace7dbbb6fb04977412d380b5"
+  integrity sha512-vpeo9S+hepT3k2h5iFxzEHvvR0GPBx9uKaErmnRzYNcaKb03DgOArjEMlgG4a9LcuZZ89a3I8xbeto487n26eA==
   dependencies:
-    multiaddr "^7.0.0"
+    multiaddr "^7.3.0"
 
 map-cache@^0.2.2:
   version "0.2.2"
@@ -2104,10 +2104,10 @@ multiaddr@^6.0.0, multiaddr@^6.0.3, multiaddr@^6.1.0:
     is-ip "^2.0.0"
     varint "^5.0.0"
 
-multiaddr@^7.0.0, multiaddr@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/multiaddr/-/multiaddr-7.2.1.tgz#f660e346dc6db1995c01aad87d6be43bf3c13ca6"
-  integrity sha512-iJ372ZXoyw1xmRh3Cawej5l17TTs72jGHDjUHCDl16s3UFkkPQkWj90BDF8hw8xnBIG/JB3RAyHhkWKiuNfM5g==
+multiaddr@^7.2.1, multiaddr@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/multiaddr/-/multiaddr-7.3.0.tgz#277c3a897338ba502f4dd76abf0f9b934684a683"
+  integrity sha512-HlV0oMy5dq+vV1t5hFL8T559j7cdgODnCQEXqDATL7oZyN6hWKJOZ4XE45LkdVJc7/A4cCLZmVg7RCBjj0wfyQ==
   dependencies:
     bs58 "^4.0.1"
     cids "~0.7.1"
@@ -2211,9 +2211,9 @@ ndjson@^1.5.0:
     through2 "^2.0.3"
 
 needle@^2.2.1:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/needle/-/needle-2.4.0.tgz#6833e74975c444642590e15a750288c5f939b57c"
-  integrity sha512-4Hnwzr3mi5L97hMYeNl8wRW/Onhy4nUKR/lVemJ8gJedxxUyBLm9kkrDColJvoSfwi0jCNhD+xCdOtiGDQiRZg==
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/needle/-/needle-2.3.2.tgz#3342dea100b7160960a450dc8c22160ac712a528"
+  integrity sha512-DUzITvPVDUy6vczKKYTnWc/pBZ0EnjMJnQ3y+Jo5zfKFimJs7S3HFCxCRZYB9FUZcrzUQr3WsmvZgddMEIZv6w==
   dependencies:
     debug "^3.2.6"
     iconv-lite "^0.4.4"
@@ -2225,9 +2225,9 @@ nice-try@^1.0.4:
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
 node-abi@^2.7.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.13.0.tgz#e2f2ec444d0aca3ea1b3874b6de41d1665828f63"
-  integrity sha512-9HrZGFVTR5SOu3PZAnAY2hLO36aW1wmA+FDsVkr85BTST32TLCA1H/AEcatVRAsWLyXS3bqUDYCAjq5/QGuSTA==
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.14.0.tgz#24650e24e8ffad2b61352519263f0cf4e2ddbfe9"
+  integrity sha512-y54KGgEOHnRHlGQi7E5UiryRkH8bmksmQLj/9iLAjoje743YS+KaKB/sDYXgqtT0J16JT3c3AYJZNI98aU/kYg==
   dependencies:
     semver "^5.4.1"
 

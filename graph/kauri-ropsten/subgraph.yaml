@@ -6,20 +6,26 @@ dataSources:
     name: Contract
     network: ropsten
     source:
-      address: "0x62b2890788fb0f001ad93c30288937df0873bdc2"
+      address: "0xaf7bd599ebf63c58de5c03c00b49e21618195e01"
       abi: Contract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.2
       language: wasm/assemblyscript
       entities:
+        - OwnershipRenounced
+        - OwnershipTransferred
         - TokensStaked
         - TokensUnstaked
       abis:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: TokensStaked(address,uint256,uint256,uint256)
+        - event: OwnershipRenounced(address)
+          handler: handleOwnershipRenounced
+        - event: OwnershipTransferred(address,address)
+          handler: handleOwnershipTransferred
+        - event: TokensStaked(address,address,uint256,uint256,uint256)
           handler: handleTokensStaked
         - event: TokensUnstaked(address,uint256,uint256,uint256)
           handler: handleTokensUnstaked
