@@ -5,7 +5,7 @@ import "./Ownable.sol";
 
 contract KauriStaking is Ownable {
 
-    event TokensStaked(address staker, uint256 time, uint256 duration, uint256 amount);
+    event TokensStaked(address stakedBy, address stakedFor, uint256 time, uint256 duration, uint256 amount);
     event TokensUnstaked(address staker, uint256 time, uint256 amount, uint256 remaining);
 
     ERC20 public token;
@@ -26,28 +26,35 @@ contract KauriStaking is Ownable {
         require(stakedTokens[msg.sender].amount == 0, "some tokens are already staked for this address");
         token.transferFrom(msg.sender, address(this), _amount);
         stakedTokens[msg.sender] = Staked(now, _duration, _amount);
-        emit TokensStaked(msg.sender, now, _duration, _amount);
+        emit TokensStaked(msg.sender, msg.sender, now, _duration, _amount);
     }
 
     function stakeTokensFor(address _staker, uint256 _amount, uint256 _duration) public onlyOwner {
         require(stakedTokens[_staker].amount == 0, "some tokens are already staked for this address");
         token.transferFrom(msg.sender, address(this), _amount);
         stakedTokens[_staker] = Staked(now, _duration, _amount);
-        emit TokensStaked(_staker, now, _duration, _amount);
+        emit TokensStaked(msg.sender, _staker, now, _duration, _amount);
     }
 
     function withdrawTokens(uint256 _amount) public {
         Staked memory staked = stakedTokens[msg.sender];
         require(!isLocked(now, staked.time, staked.duration), "tokens are still locked");
-        require(staked.amount >= _amount, "not enough tokens");
-        token.transfer(msg.sender, _amount);
-        if(staked.amount == _amount){
+        require(staked.amount > 0, "no staked tokens to withdraw");
+
+        //if trying to withdraw more than available, withdraw all
+        uint256 toWithdaw = _amount;
+        if(toWithdaw > staked.amount){
+            toWithdaw = staked.amount;
+        }
+
+        token.transfer(msg.sender, toWithdaw);
+        if(staked.amount == toWithdaw){
             //withdrawing all
             stakedTokens[msg.sender] = Staked(0, 0, 0);
         } else {
-            stakedTokens[msg.sender] = Staked(staked.time, staked.duration, staked.amount - _amount);
+            stakedTokens[msg.sender] = Staked(staked.time, staked.duration, staked.amount - toWithdaw);
         }
-        emit TokensUnstaked(msg.sender, now, _amount, staked.amount - _amount);
+        emit TokensUnstaked(msg.sender, now, toWithdaw, staked.amount - toWithdaw);
     }
 
     function isLocked(uint256 _now, uint256 _time, uint256 _duration) internal pure returns (bool) {

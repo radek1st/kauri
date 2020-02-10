@@ -6,15 +6,17 @@ DApp = {
 
     networkId: 0,
     //local, mainnet, empty, ropsten
-    tokenAddressList: ["0x8A5769bE1A538aF4259f8687c73bd03a26C1A78a","","","0xbe4c5eea642f0f2245780cd08b7168c77c22c50e"],
-    stakingAddressList: ["0xd06e9C6B3280FB3ee68264C29788B1A523a3ae99", "", "", "0x62b2890788fb0f001ad93c30288937df0873bdc2"],
-    //localhost:
+    tokenAddressList: ["0x8A5769bE1A538aF4259f8687c73bd03a26C1A78a","0xe172F366678EC7B559F6C2913a437BaaDfd4e6c8","","0x5f3ab60f01b92c1b50b713d3a70677ab7858c4e9"],
+    stakingAddressList: ["0xd06e9C6B3280FB3ee68264C29788B1A523a3ae99", "0x12ef4d13ab43ba4de1be7cc8385c6e9242aa42c0", "", "0xaf7bd599ebf63c58de5c03c00b49e21618195e01"],
+    graphEndpointList: ["https://api.thegraph.com/subgraphs/name/radek1st/kauri-ropsten",
+        "https://api.thegraph.com/subgraphs/name/radek1st/kauri","",
+        "https://api.thegraph.com/subgraphs/name/radek1st/kauri-ropsten"],
+
     tokenAddress: "",
     stakingAddress: "",
 
-    tokenDecimals: 1000000,
-
-    graphEndpoint: "https://api.thegraph.com/subgraphs/name/radek1st/kauri",
+    //8
+    tokenDecimals: 100000000,
 
     init: function() {
         console.log("[x] Initializing DApp.");
@@ -58,6 +60,9 @@ DApp = {
                 }
                 DApp.tokenAddress = DApp.tokenAddressList[res];
                 DApp.stakingAddress = DApp.stakingAddressList[res];
+
+                $("#stakingContractAddress").html(DApp.stakingAddress);
+                $("#tokenContractAddress").html(DApp.tokenAddress);
 
                 $.getJSON('contracts/KauriStaking.json', function(stakingContract){
                     DApp.stakingContract = new web3.eth.Contract(stakingContract.abi, DApp.stakingAddress);
@@ -244,14 +249,14 @@ DApp = {
             let from = $("#from").val();
             let to = $("#to").val();
 
-            fetch(DApp.graphEndpoint, {
+            fetch(DApp.graphEndpointList[DApp.networkId], {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
                 body: '{"query":"{tokensStakeds(where: {time_gt: ' + from +
-                    ', time_lt: ' + to + '}){id, staker, time, duration, amount},tokensUnstakeds(where: {time_gt: '
+                    ', time_lt: ' + to + '}){id, stakedBy, stakedFor, time, duration, amount},tokensUnstakeds(where: {time_gt: '
                 + from + ',time_lt: ' + to +'}) {id, staker, time, amount, remaining}}"}'
             })
                 .then(r => r.json())
@@ -263,11 +268,11 @@ DApp = {
                     let staked = data.data.tokensStakeds;
                     let unstaked = data.data.tokensUnstakeds;
                     for (var i = 0; i < staked.length; i++) {
-                        stakers.push(staked[i].staker);
-                        if(!Array.isArray(events[staked[i].staker])){
-                            events[staked[i].staker] = [];
+                        stakers.push(staked[i].stakedFor);
+                        if(!Array.isArray(events[staked[i].stakedFor])){
+                            events[staked[i].stakedFor] = [];
                         }
-                        events[staked[i].staker].push(staked[i]);
+                        events[staked[i].stakedFor].push(staked[i]);
                     }
                     for (var i = 0; i < unstaked.length; i++) {
                         unstakers.push(unstaked[i].staker);
@@ -287,13 +292,16 @@ DApp = {
                         for (var j = 0; j < events[all[i]].length; j++) {
                             output += "<li>";
                             if(events[all[i]][j].duration){
-                                output += "Staked: " + events[all[i]][j].amount + "<br>";
+                                output += "Staked: " + (events[all[i]][j].amount/ DApp.tokenDecimals) + "<br>";
+                                output += "StakedBy: " + events[all[i]][j].stakedBy + "<br>";
+                                output += "StakedFor: " + events[all[i]][j].stakedFor + "<br>";
                                 output += "Time: " + events[all[i]][j].time + "<br>";
                                 output += "Duration: " + events[all[i]][j].duration;
                             } else {
-                                output += "Unstaked: " + events[all[i]][j].amount + "<br>";
+                                output += "Withdrawn: " + (events[all[i]][j].amount/ DApp.tokenDecimals) + "<br>";
+                                output += "Staker: " + events[all[i]][j].staker + "<br>";
                                 output += "Time: " + events[all[i]][j].time + "<br>";
-                                output += "Remaining: " + events[all[i]][j].remaining;
+                                output += "Remaining: " + (events[all[i]][j].remaining/ DApp.tokenDecimals);
                             }
                             output += "</li>";
                         }
@@ -302,11 +310,7 @@ DApp = {
                     $("#all-events").html(output);
                 });
 
-
         });
-
-
-
 
         console.log("[x] Frontend initialized.");
     }

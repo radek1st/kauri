@@ -35,8 +35,8 @@ contract Ownable {
      * @dev Allows the current owner to relinquish control of the contract.
      */
     function renounceOwnership() public onlyOwner {
-        emit OwnershipRenounced(owner);
         owner = address(0);
+        emit OwnershipRenounced(owner);
     }
 
     /**
@@ -53,7 +53,7 @@ contract Ownable {
      */
     function _transferOwnership(address _newOwner) internal {
         require(_newOwner != address(0));
-        emit OwnershipTransferred(owner, _newOwner);
         owner = _newOwner;
+        emit OwnershipTransferred(owner, _newOwner);
     }
 }

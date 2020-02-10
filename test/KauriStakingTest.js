@@ -6,7 +6,7 @@ const KauriTestToken = artifacts.require("./KauriTestToken.sol");
 let creator, user1, user2;
 let kauriToken, kauriStaking;
 
-const testTokenDecimals = 6;
+const testTokenDecimals = 8;
 const oneHundredTokens = 100 * Math.pow(10, testTokenDecimals);
 const twoHundredTokens = 200 * Math.pow(10, testTokenDecimals);
 const threeHundredTokens = 300 * Math.pow(10, testTokenDecimals);
@@ -58,7 +58,7 @@ contract('KauriStaking', (accounts) => {
         tx = await kauriStaking.stakeTokens(oneHundredTokens, duration, {from: user1});
 
         truffleAssert.eventEmitted(tx, 'TokensStaked', (ev) => {
-            return ev.staker === user1 && ev.time > 0 &&
+            return ev.stakedBy === user1 && ev.stakedFor === user1 && ev.time > 0 &&
                 ev.duration == duration && ev.amount == oneHundredTokens;
         });
 
@@ -75,7 +75,7 @@ contract('KauriStaking', (accounts) => {
         tx = await kauriStaking.stakeTokens(oneHundredTokens, duration, {from: user2});
 
         truffleAssert.eventEmitted(tx, 'TokensStaked', (ev) => {
-            return ev.staker === user2 && ev.time > 0 &&
+            return ev.stakedBy === user2 && ev.stakedFor === user2 && ev.time > 0 &&
                 ev.duration == duration && ev.amount == oneHundredTokens;
         });
 
@@ -90,6 +90,13 @@ contract('KauriStaking', (accounts) => {
     });
 
     it("User can withdraw tokens after lock expired", async () => {
+        try {
+            await kauriStaking.withdrawTokens(threeHundredTokens, {from: user1});
+            assert(false);
+        } catch (e) {
+            expectRevert(e, "trying to unstake when none");
+        }
+
         await kauriStaking.stakeTokens(twoHundredTokens, duration, {from: user1});
         let tx;
 
@@ -103,20 +110,12 @@ contract('KauriStaking', (accounts) => {
         //move time forward
         increaseTime(duration);
 
-        try {
-            await kauriStaking.withdrawTokens(threeHundredTokens, {from: user1});
-            assert(false);
-        } catch (e) {
-            expectRevert(e, "trying to unstake more than available");
-        }
-
         let details = await kauriStaking.stakedDetails.call(user1);
         assert(details[0] > 0, "time shouldn't be zero");
         assert(details[1] == duration, "invalid duration");
         assert(details[2] == twoHundredTokens, "invalid amount");
         assert(details[3] == false, "should be unlocked");
 
-        //withdraw some tokens
         tx = await kauriStaking.withdrawTokens(oneHundredTokens, {from: user1});
 
         truffleAssert.eventEmitted(tx, 'TokensUnstaked', (ev) => {
@@ -134,8 +133,8 @@ contract('KauriStaking', (accounts) => {
         assert(details[2] == oneHundredTokens, "amount should correct");
         assert(details[3] == false, "should be unlocked");
 
-        //withdraw all the remaining tokens
-        tx = await kauriStaking.withdrawTokens(oneHundredTokens, {from: user1});
+        //has 100 tokens, saying to withdraw 300 tokens, should still withdraw 100
+        tx = await kauriStaking.withdrawTokens(threeHundredTokens, {from: user1});
 
         truffleAssert.eventEmitted(tx, 'TokensUnstaked', (ev) => {
             return ev.staker === user1 && ev.time > 0 &&
@@ -165,7 +164,7 @@ contract('KauriStaking', (accounts) => {
         tx = await kauriStaking.stakeTokensFor(user1, oneHundredTokens, duration, {from: creator});
 
         truffleAssert.eventEmitted(tx, 'TokensStaked', (ev) => {
-            return ev.staker === user1 && ev.time > 0 &&
+            return ev.stakedBy === creator && ev.stakedFor === user1 && ev.time > 0 &&
                 ev.duration == duration && ev.amount == oneHundredTokens;
         });
 

@@ -11,11 +11,12 @@ contract KauriTestToken is ERC20 {
 
   string public name = "Kauri Test Token";
   string public symbol = "KTT";
-  uint256 public decimals = 6;
+  uint256 public decimals = 8;
 
   constructor() public {
     totalSupply = 1000000 * (10 ** decimals);
     balances[msg.sender] = totalSupply;
+    emit Transfer(0x00, msg.sender, totalSupply);
   }
 
   /**
